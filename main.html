@@ -428,16 +428,26 @@
             if (mystep==1){
               myformlist[1] = '表格A 基本資料';
               myformlist[2] = '表格B 選舉報告';
-              myformlist[3] = '表格D 補充資料、錄音連結';
-              myformlist[4] = '表格E 聲明';
-              myformlist[5] = '會員名單（屬會適用)';
-              myformlist[6] = '學系人數證明（院系會適用'; 
-              myformlist[7] = '銀行賬戶確認聲明';
-              myformlist[8] = '團體的銀行賬戶/現金結餘證明';
-              myformlist[9] = '選票樣式';
-              myformlist[10] = '行政費收據';
+              myformlist[3] = '表格D 聲明';
+              myformlist[4] = '會員名單＊ 或 學系人數證明';
+              myformlist[5] = '銀行賬戶確認聲明';
+              myformlist[6] = '團體的銀行賬戶結餘證明 或 團體的現金結餘證明'; 
+              myformlist[7] = '選票樣式';
+              myformlist[8] = '去屆工作報告';
+              myformlist[9] = '去屆財政報告';
+              myformlist[10] = '現屆工作計劃';
+              myformlist[11] = '現屆財政預算';
+              myformlist[12] = '其他文件';
             }
-            for (var j=1; j<10; j++){
+            if (mystep==2){
+              myformlist[1] = '表格C1 會議表決紀錄 或 表格C2 全民投票紀錄';
+              myformlist[2] = '去屆工作報告';
+              myformlist[3] = '去屆財政報告';
+              myformlist[4] = '現屆工作計劃';
+              myformlist[5] = '現屆財政預算';
+              myformlist[6] = '其他文件'; 
+            }
+            for (var j=1; j<=12; j++){
               if (mydata[item]['step'+mystep+'form'+j]){
                 var row = table.insertRow(table.rows.length);
                 var cell1 = row.insertCell(0);
