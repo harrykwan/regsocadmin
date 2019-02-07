@@ -56,18 +56,128 @@
       .forma{
           border: 1px solid white;
           border-radius: 3px;
-          background: black;
-          color: white;
+          background: white;
+          color: black;
           /*padding: 1px;*/
-          width: 150px;
+          width: 100%;
           font-size: 15px;
           font-family: ‘cwTeXYen’,'Noto Sans Tc',/*'FontAwesome', sans-serif;*/'Roboto', sans-serif;
-          color: white;
       }
 
       .mytd{
         border: 1px solid grey;
       }
+
+      .myheader{
+        /*border-bottom: 4px solid darkred;*/
+        margin-bottom: 20px;
+        /*padding: 10px;*/
+      }
+
+
+.navbar {
+  overflow: hidden;
+  background-color: #333; 
+  background-color: #FFF;
+  border: 1px solid grey;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  color: black;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.subnav {
+  float: left;
+  overflow: hidden;
+}
+
+.subnav .subnavbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  color: black;
+  padding: 14px 20px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .subnav:hover .subnavbtn {
+  background-color: red;
+  background-color: #EEE;
+  border-bottom: 2px solid #EEE;
+}
+
+.subnav-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  background-color: red;
+  background-color: #EEE;
+  width: 100%;
+  z-index: 1;
+}
+
+.subnav-content a {
+  float: left;
+  color: white;
+  color: black;
+  text-decoration: none;
+}
+
+.subnav-content a:hover {
+  background-color: #FFF;
+  color: black;
+}
+
+.subnav:hover .subnav-content {
+  display: block;
+}
+
+  .myselected{
+    border-bottom: 2px solid black;
+  }
+
+  .mypage{
+    border: 1px solid grey;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #FFF;
+  }
+
+
+  .approvebox{
+    position: fixed;
+    top: 5%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    background-color: white;
+    color: black;
+    height: 70%;
+    padding: 20px;
+    opacity: 0.9;
+    border: 1px solid black;
+    overflow: scroll;
+  }
+
+
+
+  #oldmessage>div{
+    margin-left: 20px; 
+    border-left: 2px solid red; 
+    padding-left: 10px;
+    margin-bottom: 5px;
+  }
 
     </style>
   </head>
@@ -109,10 +219,10 @@
         
     </div>
 
-    <div hidden id="formaarea" style="position: fixed; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 80%; top: 100px; height: 70%; background: black; color: white; opacity: 0.8; padding:20px; overflow: hidden; border: 2px solid white;border-radius: 5px; font-size: 16px;">
+    <div hidden id="formaarea" style="position: fixed; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 80%; top: 100px; height: 70%; background: white; color: black; opacity: 0.9; padding:20px; overflow: hidden; border: 1px solid black; font-size: 16px;">
         <div style="overflow: scroll; height: 110%; width: 110%;">
-            <div style="margin-top: 50px; background-color: black; color: white; border: none;">表格A</div>
-            <table id="forma" style=" width: 80%;margin-left: 10%; margin-top: 3%; color: white;">
+            <div style="margin-top: 50px; background-color: white; color: black; border: none;">表格A</div>
+            <table id="forma" style=" width: 80%;margin-left: 10%; margin-top: 3%; color: black;">
             <tr><td>屬下團體名稱: </td><td><input disabled class="forma" type="text" name=""></td></tr>
             <tr><td>團體性質:</td><td><select disabled class="forma">
               <option value="國際生學生會">國際生學生會</option>
@@ -135,20 +245,32 @@
             </table>
             <hr>
            幹事會成員
-            <table id="membertable" style=" width: 80%;margin-left: 10%; margin-top: 3%; border: none; color: white;">
+            <table id="membertable" style=" width: 80%;margin-left: 10%; margin-top: 3%; border: none; color: black;">
                 <tr style="border-bottom: 1px solid grey;"><td>職位</td><td>中文名稱</td><td>英文名稱</td><td>學生證編號</td><td>書院</td><td>學系</td><td>學年</td><td>電話</td></tr>
             </table>
             <hr>
            代表會成員
-            <table id="membertable2" style=" width: 80%;margin-left: 10%; margin-top: 3%; border: none; color: white;">
+            <table id="membertable2" style=" width: 80%;margin-left: 10%; margin-top: 3%; border: none; color: black;">
                 <tr style="border-bottom: 1px solid grey;"><td>職位</td><td>中文名稱</td><td>英文名稱</td><td>學生證編號</td><td>書院</td><td>學系</td><td>學年</td><td>電話</td></tr>
             </table>
              
             
-            <div onclick="closeforma()" style="position: fixed; color: white; background: black; top:110px; right:10%;">X</div>
+            <div onclick="closeforma()" style="position: fixed; color: black; top:110px; right:10%;">X</div>
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
         </div>
+
+    </div>
+
+
+    <div hidden id="approvebox" class="approvebox">
+      
+      <div style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">Comments</div>
+      <input placeholder="your name" id='messageheader' style="font-size: 16px; padding: 5px; border: 1px solid black; width: 80%; margin: 20px; margin-bottom: 10px;" type="text" name=""><br>
+      <textarea placeholder="your message" id='messagebody' style="font-size: 16px; padding: 5px; border: 1px solid black; height: 400px; width: 80%; margin: 20px; margin-top: 0px; margin-bottom: 0px;"></textarea><br>
+      <button onclick="addcomment()" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 80%; margin: 20px; margin-top: 10px;">Add</button>
+      <div style="" id="oldmessage"></div>
+      <div onclick="closeapprovebox()" style="position: fixed; color: black; top:6%; right:20%; ">X</div>
 
     </div>
     <!--
@@ -231,30 +353,40 @@
         for (var j=1; j<myresult.values.length; j++){
         	// document.getElementById("myshowsheet").innerHTML += myresult.values[j]+'<br>';
           // console.log(myresult.values[j]);
-          if (myresult.values[j][1].split('|').length==2){
-            if (!mydata[myresult.values[j][1].split('|')[0]]){
-              mydata[myresult.values[j][1].split('|')[0]] = {};
-            }
-            mydata[myresult.values[j][1].split('|')[0]].step = myresult.values[j][1].split('|')[1];
-            mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];
-            // document.getElementById("myshowsheet").innerHTML += myresult.values[j][1].split('|')[0]+' '+myresult.values[j][1].split('|')[1]+'<br>';
+          if (myresult.values[j]){
+            if (myresult.values[j][1]){
+                if (myresult.values[j][1].split('|').length==2){
+                  if (!mydata[myresult.values[j][1].split('|')[0]]){
+                    mydata[myresult.values[j][1].split('|')[0]] = {};
+                  }
+                  mydata[myresult.values[j][1].split('|')[0]].step = myresult.values[j][1].split('|')[1];
+                  mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];
+                  // document.getElementById("myshowsheet").innerHTML += myresult.values[j][1].split('|')[0]+' '+myresult.values[j][1].split('|')[1]+'<br>';
 
-            // for (var k=0; k<myresult.values[j][2].split('|').length; k++){
-            //   if (myresult.values[j][2].split('|')[k]!=''&&myresult.values[j][2].split('|')[k]!='undefined')
-            //    document.getElementById("myshowsheet").innerHTML += '- '+myresult.values[j][2].split('|')[k]+'<br>';
-            // }
-            // document.getElementById("myshowsheet").innerHTML += myresult.values[j][2].split('|')+'<br>';
-            // document.getElementById("myshowsheet").innerHTML += '<br>';
-          } else if (myresult.values[j][1].split('|').length==3){
-            if (!mydata[myresult.values[j][1].split('|')[0]]){
-              mydata[myresult.values[j][1].split('|')[0]] = {};
+                  // for (var k=0; k<myresult.values[j][2].split('|').length; k++){
+                  //   if (myresult.values[j][2].split('|')[k]!=''&&myresult.values[j][2].split('|')[k]!='undefined')
+                  //    document.getElementById("myshowsheet").innerHTML += '- '+myresult.values[j][2].split('|')[k]+'<br>';
+                  // }
+                  // document.getElementById("myshowsheet").innerHTML += myresult.values[j][2].split('|')+'<br>';
+                  // document.getElementById("myshowsheet").innerHTML += '<br>';
+                } else if (myresult.values[j][1].split('|').length==3){
+                  if (!mydata[myresult.values[j][1].split('|')[0]]){
+                    mydata[myresult.values[j][1].split('|')[0]] = {};
+                  }
+                   mydata[myresult.values[j][1].split('|')[0]][myresult.values[j][1].split('|')[1]+myresult.values[j][1].split('|')[2]] = myresult.values[j][2];
+                    mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];         
+                } else if (myresult.values[j][1].split('|').length==1){
+                  if (myresult.values[j][2]=='comment'){
+                    mydata[myresult.values[j][1]].comment = myresult.values[j][3];
+                  } else {
+                    mydata[myresult.values[j][1]].step = undefined;
+                    mydata[myresult.values[j][1]].comment = '';
+                  }
+                }
+                // console.log(mydata);
             }
-             mydata[myresult.values[j][1].split('|')[0]][myresult.values[j][1].split('|')[1]+myresult.values[j][1].split('|')[2]] = myresult.values[j][2];
-              mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];         
-          } else {
-            mydata[myresult.values[j][1]].step = undefined;
           }
-          // console.log(mydata);
+          
 
         }
 
@@ -289,7 +421,7 @@
           else{
              mystep = mystep[4];
             document.getElementById("myshowsheet").innerHTML +=  item + '<table id="'+item+'" style="width: 80%;">'+'<tr><td style="width: 30%;">submit step</td><td>'+ mystep +'</td</tr>'+'<tr><td>last update</td><td>'+mydata[item].updatetime+'</td</tr>'+'</table><br>';
-            document.getElementById("myshowsheet").innerHTML += "<button onclick='myapprove("+'"'+item+'",'+mystep+")'>Approve</button>"+"<button onclick='mydisapprove("+'"'+item+'",'+mystep+")'>Fail</button>"+'<br><br><hr><br><br>';
+            document.getElementById("myshowsheet").innerHTML += "<button onclick='myapprove("+'"'+item+'",'+mystep+")'>Approve</button>"+"<button onclick='mydisapprove("+'"'+item+'",'+mystep+")'>Fail</button>"+"<button onclick='mycomment("+'"'+item+'"'+")'>Comment</button>"+'<br><br><hr><br><br>';
 
             var table = document.getElementById(item);
             var myformlist=[];
@@ -358,7 +490,13 @@
 
     function updateSignInStatus(isSignedIn) {
       if (isSignedIn) {
+        document.getElementById("signin-button").hidden = true;
+        document.getElementById("signout-button").hidden = false;
         makeApiCall();
+        document.getElementById("myheaderbar").getElementsByTagName('a')[0].click();
+      } else {
+        document.getElementById("signin-button").hidden = false;
+        document.getElementById("signout-button").hidden = true;
       }
     }
 
@@ -372,6 +510,10 @@
 
     function closeforma(){
         document.getElementById("formaarea").hidden = true;
+    }
+
+    function closeapprovebox(){
+        document.getElementById("approvebox").hidden = true;
     }
 
     function mydownload(x){
@@ -429,34 +571,76 @@
     }
 
     function myapprove(x,y) {
-      if (y==1){
-        changestatus(x,2);
-      } else if (y==2){
-        changestatus(x,4);
+      if (confirm('Approve '+x+'?')){
+        if (y==1){
+          changestatus(x,2);
+        } else if (y==2){
+          changestatus(x,4);
+        }
+        
+        document.getElementById("googleforminput2").value = x;
+        document.getElementById("googleforminput3").value = "approve";
+        document.getElementById("googleforminput1").value = '';
+        document.getElementById("form").submit();
+        checkdone(1);
       }
       
-      document.getElementById("googleforminput2").value = x;
-      document.getElementById("googleforminput3").value = "approve";
-      document.getElementById("googleforminput1").value = '';
-      document.getElementById("form").submit();
-      checkdone(1);
     }
 
+    var mymessage = '';
     function mydisapprove(x,y) {
-      if (y==1){
-        changestatus(x,0);
-      } else if (y==2){
-        changestatus(x,2);
+      mymessage = prompt("Disapprove reason:",'');
+      if (confirm('Disapprove '+x+' for '+mymessage+'?')){
+        if (y==1){
+          changestatus(x,0);
+        } else if (y==2){
+          changestatus(x,2);
+        }
+        document.getElementById("googleforminput2").value = x;
+        document.getElementById("googleforminput3").value = "disapprove";
+        document.getElementById("googleforminput1").value = mymessage;
+        document.getElementById("form").submit();
+        setusermessage(x,mymessage);
+        checkdone(1);
       }
-      document.getElementById("googleforminput2").value = x;
-      document.getElementById("googleforminput3").value = "disapprove";
-      document.getElementById("googleforminput1").value = '';
-      document.getElementById("form").submit();
-      checkdone(1);
+      
     }
 
+    function setusermessage(x,y){
+      var docRef = db.collection("societystatus").doc(x);
+      docRef.set({
+        failmessage: y
+      }, {merge: true});
+    }
+
+    function mycomment(x){
+      document.getElementById("googleforminput2").value = x;
+      // document.getElementById("googleforminput3").value = "comment";
+      // document.getElementById("googleforminput1").value = mymessage;
+      document.getElementById("approvebox").hidden = false;
+      if (mydata[x].comment)
+        document.getElementById('oldmessage').innerHTML = mydata[x].comment;
+      else
+        document.getElementById('oldmessage').innerHTML = '';
+    }
+
+    function addcomment(){
+      if (confirm('Add comment by '+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value)){
+          document.getElementById("googleforminput3").value = "comment";
+          if (mydata[document.getElementById("googleforminput2").value].comment)
+            document.getElementById("googleforminput1").value = mydata[document.getElementById("googleforminput2").value].comment+'<div>'+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value+'</div>';
+          else
+            document.getElementById("googleforminput1").value = '<div>'+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value+'</div>';
+          document.getElementById('oldmessage').innerHTML = document.getElementById("googleforminput1").value;
+          mydata[document.getElementById("googleforminput2").value].comment = document.getElementById('oldmessage').innerHTML;
+          document.getElementById("form").submit();
+      }
+      
+    }
+
+    var formadata;
     function fillforma(x) {
-      var formadata = mydata[x].step1form1.split('|');
+      formadata = mydata[x].step1form1.split('|');
       document.getElementById("formaarea").hidden = false;
       for (var j=0; j<=5; j++){
         document.getElementById("forma").getElementsByTagName("input")[j].value = formadata[j];
@@ -543,14 +727,54 @@
 
     }
 
+    function changepage(x){
+      var myheaderbar = document.getElementById("myheaderbar").getElementsByTagName("a");
+      for (var j=0; j<myheaderbar.length; j++){
+        myheaderbar[j].classList.remove('myselected');
+      }
+      x.classList.add('myselected');
+      if (x.href.split("#")[1]=='home'){
+        document.getElementById("myshowsheet").hidden = false;
+        document.getElementById("myranktable").hidden = true;
+        document.getElementById("myfilepage").hidden = true;
+      } else if (x.href.split("#")[1]=='ranking'){
+        document.getElementById("myshowsheet").hidden = true;
+        document.getElementById("myranktable").hidden = false;
+        document.getElementById("myfilepage").hidden = true;
+      } else if (x.href.split("#")[1]=='file'){
+        document.getElementById("myshowsheet").hidden = true;
+        document.getElementById("myranktable").hidden = true;
+        document.getElementById("myfilepage").hidden = false;
+      }
+    }
+
     handleSignInClick();
     </script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
-    <div id="myshowsheet"></div>
-    <button id="signin-button" onclick="handleSignInClick()">Sign in</button>
-    <button id="signout-button" onclick="handleSignOutClick()">Sign out</button>
+    <div id="myheader" class="myheader">
+      <div id="myheaderbar" class="navbar">
+        <a onclick="changepage(this)" class='myselected' href="#home">Home</a>
+        <a onclick="changepage(this)" href="#ranking">Regsoc Ranking</a>
+        <a onclick="changepage(this)" href="#file">File</a>
+  <!-- <div class="subnav">
+    <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+  </div>  -->
+  <!-- <div class="subnav">
+    <button class="subnavbtn">Partners <i class="fa fa-caret-down"></i></button>
+    <div class="subnav-content">
+      <a href="#link1">Link 1</a>
+      <a href="#link2">Link 2</a>
+    </div>
+  </div> -->
+      </div>
+    </div>
+    <div hidden class="mypage" id="myshowsheet"></div>
+    <div hidden class="mypage" id="myranktable"></div>
+    <div hidden class="mypage" id="myfilepage"></div>
+    <button hidden id="signin-button" onclick="handleSignInClick()">Sign in</button>
+    <button hidden id="signout-button" onclick="handleSignOutClick()">Sign out</button>
   </body>
 </html>
