@@ -601,6 +601,7 @@
     function mydisapprove(x,y) {
       mymessage = prompt("Disapprove reason:",'');
       if (confirm('Disapprove '+x+' for '+mymessage+'?')){
+        setusermessage(x,mymessage);
         if (y==1){
           changestatus(x,0);
         } else if (y==2){
@@ -610,7 +611,6 @@
         document.getElementById("googleforminput3").value = "disapprove";
         document.getElementById("googleforminput1").value = mymessage;
         document.getElementById("form").submit();
-        setusermessage(x,mymessage);
         checkdone(1);
       }
       
@@ -748,21 +748,31 @@
         document.getElementById("myranktable").hidden = true;
         document.getElementById("myfilepage").hidden = true;
         document.getElementById("rawdatapage").hidden = true;
+        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='ranking'){
         document.getElementById("myshowsheet").hidden = true;
         document.getElementById("myranktable").hidden = false;
         document.getElementById("myfilepage").hidden = true;
         document.getElementById("rawdatapage").hidden = true;
+        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='file'){
         document.getElementById("myshowsheet").hidden = true;
         document.getElementById("myranktable").hidden = true;
         document.getElementById("myfilepage").hidden = false;
         document.getElementById("rawdatapage").hidden = true;
+        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='raw'){
         document.getElementById("myshowsheet").hidden = true;
         document.getElementById("myranktable").hidden = true;
         document.getElementById("myfilepage").hidden = true;
         document.getElementById("rawdatapage").hidden = false;
+        document.getElementById("superuserpage").hidden = true;
+      } else if (x.href.split("#")[1]=='sudo'){
+        document.getElementById("myshowsheet").hidden = true;
+        document.getElementById("myranktable").hidden = true;
+        document.getElementById("myfilepage").hidden = true;
+        document.getElementById("rawdatapage").hidden = true;
+        document.getElementById("superuserpage").hidden = false;
       }
     }
 
@@ -778,6 +788,7 @@
         <a onclick="changepage(this)" href="#ranking">Regsoc Ranking</a>
         <a onclick="changepage(this)" href="#file">File</a>
         <a onclick="changepage(this)" href="#raw">Raw Data</a>
+        <a onclick="changepage(this)" href="#sudo">Super User</a>
   <!-- <div class="subnav">
     <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
   </div>  -->
@@ -800,6 +811,11 @@
     <div hidden class="mypage" id="rawdatapage">
       <iframe style="width: 100%; height: 100%;" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRkralVI-D4JJGEXhEqy8PgsvHg_pwaFzPohr5bq_MMXlGawI_cXJd9DASmUfJHj9BUsMEmKJIJ51xD/pubhtml?widget=true&amp;headers=false"></iframe>
     </div>
+
+     <div hidden class="mypage" id="superuserpage">
+      
+    </div>
+
     <button hidden id="signin-button" onclick="handleSignInClick()">Sign in</button>
     <button hidden id="signout-button" onclick="handleSignOutClick()">Sign out</button>
   </body>
