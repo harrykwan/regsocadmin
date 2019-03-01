@@ -59,6 +59,7 @@
         border-radius: 0;
         border: 1px solid black;
         background-color: white;
+        color: black;
       }
 
       .forma{
@@ -1006,10 +1007,10 @@
       <div id="myheaderbar" class="navbar">
         <a onclick="changepage(this)" class='myselected' href="#home">Home</a>
         <a onclick="changepage(this)" href="#ranking">Regsoc Ranking</a>
-        <a onclick="changepage(this)" href="#file">File</a>
+        <a hidden onclick="changepage(this)" href="#file">File</a>
         <a onclick="changepage(this)" href="#raw">Raw Data</a>
-        <a onclick="changepage(this)" href="#sudo">Super User</a>
         <a onclick="changepage(this)" href="#socpaper">Gen Soc Paper</a>
+        <a onclick="changepage(this)" href="#sudo">Super User</a>
   <!-- <div class="subnav">
     <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
   </div>  -->
@@ -1028,12 +1029,17 @@
 
     </div>
     <div hidden class="mypage" id="myfilepage">
-      <a target="_blank" href="https://console.firebase.google.com/project/cuhk-reg-soc/storage/cuhk-reg-soc.appspot.com/files">click here</a>
+      <a target="_blank" href="https://console.firebase.google.com/project/cuhk-reg-soc/storage/cuhk-reg-soc.appspot.com/files">File system</a>
       <!-- <iframe style="width: 100%; height: 90%;" src="https://console.firebase.google.com/project/cuhk-reg-soc/storage/cuhk-reg-soc.appspot.com/files"></iframe> -->
 
     </div>
     <div hidden class="mypage" id="rawdatapage">
+      <div style="margin-bottom: 20px;"><a class="myinput" target="_blank" href="https://docs.google.com/spreadsheets/d/1lFp_6UHi4KgSx2vtMw9i39ax-KXojMKqhNTEEywNc7E/edit?usp=sharing">google sheet link</a></div>
+      <div style="margin-bottom: 20px;"><a class="myinput" target="_blank" href="https://console.firebase.google.com/project/cuhk-reg-soc/database/firestore/data~2Fsocietystatus">Society status</a></div>
+      <div><a class="myinput" target="_blank" href="https://console.firebase.google.com/project/cuhk-reg-soc/storage/cuhk-reg-soc.appspot.com/files">File system</a></div>
+      <br>
       <iframe style="width: 100%; height: 100%;" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRkralVI-D4JJGEXhEqy8PgsvHg_pwaFzPohr5bq_MMXlGawI_cXJd9DASmUfJHj9BUsMEmKJIJ51xD/pubhtml?widget=true&amp;headers=false"></iframe>
+
     </div>
 
     <div hidden class="mypage" id="superuserpage">
