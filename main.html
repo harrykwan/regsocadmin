@@ -53,6 +53,14 @@
         border: 1px solid black;
       }
 
+      .myinput{
+        padding: 5px;
+        margin-right: 10px;
+        border-radius: 0;
+        border: 1px solid black;
+        background-color: white;
+      }
+
       .forma{
           border: 1px solid white;
           border-radius: 3px;
@@ -357,6 +365,8 @@
           if (myresult.values[j]){
             if (myresult.values[j][1]){
                 if (myresult.values[j][1].split('|').length==2){
+                  if (mydata[myresult.values[j][1]]&&mydata[myresult.values[j][1]].finish)
+                    delete mydata[myresult.values[j][1]]['finish'];
                   if (!mydata[myresult.values[j][1].split('|')[0]]){
                     mydata[myresult.values[j][1].split('|')[0]] = {};
                   }
@@ -389,6 +399,11 @@
                       adminlist[tempadmin]++;
                     }
                   } else {
+                    if (myresult.values[j][2]=='approve'){
+                      if (mydata[myresult.values[j][1]].step=='step2')
+                        mydata[myresult.values[j][1]].finish = 1;
+                    }
+                    clearmydatafile(myresult.values[j][1]);
                     mydata[myresult.values[j][1]].step = undefined;
                     mydata[myresult.values[j][1]].comment = '';
                   }
@@ -398,6 +413,15 @@
           }
           
 
+        }
+
+        function clearmydatafile(x){
+          for (var j=1; j<=11; j++){
+            if (mydata[x]['step1form'+j]&&j!=1)
+              delete mydata[x]['step1form'+j];
+            if (mydata[x]['step2form'+j])
+              delete mydata[x]['step2form'+j];
+          }
         }
 
 
@@ -498,9 +522,34 @@
         }
         document.getElementById('myranktable').innerHTML = tempouput;
         
+
+        document.getElementById("socpaperinput4").value = getnowdate();
+        
+        if (getCookie('letterman')){
+          document.getElementById("socpaperinput3").value = getCookie('letterman');
+        }
+
+        for (var j in mydata){
+          if (mydata[j].finish){
+            var option = document.createElement("option");
+            option.text = j;
+            document.getElementById("socpaperinput1").add(option);
+          }
+
+        }
+        socpapersocchange();
+
+
+
+
       }, function(reason) {
         console.error('error: ' + reason.result.error.message);
       });
+    }
+
+
+    function socpapersocchange(){
+      document.getElementById("socpaperinput2").value = mydata[document.getElementById("socpaperinput1").value].step1form1.split('|')[1].split('-')[1];
     }
 
     function initClient() {
@@ -556,6 +605,29 @@
     function closeapprovebox(){
         document.getElementById("approvebox").hidden = true;
     }
+
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      var expires = "expires="+d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
 
     function mydownload(x){
       console.log(x);
@@ -774,40 +846,157 @@
         myheaderbar[j].classList.remove('myselected');
       }
       x.classList.add('myselected');
+      var temppages = ["myshowsheet","myranktable","myfilepage","rawdatapage","superuserpage","socpaperpage"];
+      for (var j=0; j<temppages.length; j++){
+        document.getElementById(temppages[j]).hidden = true;
+      }
       if (x.href.split("#")[1]=='home'){
         document.getElementById("myshowsheet").hidden = false;
-        document.getElementById("myranktable").hidden = true;
-        document.getElementById("myfilepage").hidden = true;
-        document.getElementById("rawdatapage").hidden = true;
-        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='ranking'){
-        document.getElementById("myshowsheet").hidden = true;
         document.getElementById("myranktable").hidden = false;
-        document.getElementById("myfilepage").hidden = true;
-        document.getElementById("rawdatapage").hidden = true;
-        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='file'){
-        document.getElementById("myshowsheet").hidden = true;
-        document.getElementById("myranktable").hidden = true;
         document.getElementById("myfilepage").hidden = false;
-        document.getElementById("rawdatapage").hidden = true;
-        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='raw'){
-        document.getElementById("myshowsheet").hidden = true;
-        document.getElementById("myranktable").hidden = true;
-        document.getElementById("myfilepage").hidden = true;
         document.getElementById("rawdatapage").hidden = false;
-        document.getElementById("superuserpage").hidden = true;
       } else if (x.href.split("#")[1]=='sudo'){
-        document.getElementById("myshowsheet").hidden = true;
-        document.getElementById("myranktable").hidden = true;
-        document.getElementById("myfilepage").hidden = true;
-        document.getElementById("rawdatapage").hidden = true;
         document.getElementById("superuserpage").hidden = false;
+      } else if (x.href.split("#")[1]=='socpaper'){
+        document.getElementById("socpaperpage").hidden = false;
       }
     }
 
     handleSignInClick();
+
+    var is_date = function(input) {
+      if ( Object.prototype.toString.call(input) === "[object Date]" ) 
+        return true;
+      return false;   
+    };
+
+    function getnowdate(){
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+
+      if(dd<10) {
+          dd = '0'+dd
+      } 
+
+      if(mm<10) {
+          mm = '0'+mm
+      } 
+
+      today = mm + '/' + dd + '/' + yyyy;
+      return today;
+      // document.write(today);
+    }
+
+    
+
+    function generateregsocpaper(x,diudate,letterman,letterdate,mymemberlist) {
+      console.log(mymemberlist)
+        document.getElementById("mainframe").innerHTML = '';
+        mymemberlist = mymemberlist.split('|');
+        var chinnum = ['零','一','二','三','四','五','六','七','八','九','十'];
+
+        if (!letterdate)
+          letterdate = getnowdate();
+
+        if (letterman){
+          letterman = '<br>（'+letterman+'代行）';
+        }
+
+        document.getElementById("mainframe").innerHTML += '<div id="socshit"><div style="background-color: white; color black;  overflow: hidden;"><img style="width: 100%;" src="regsocpaper.png"></div>    <div style="background-color: white; color: black; text-align: center; padding: 20px;">        <h1 style="font-size: 18px;">香港中文大學學生會<br>屬下團體登記證明書</h1>      <br>根據《屬下團體章則》第三十三條發出<br><br><br><br>        <div style="width: 700px; text-align: left; margin: 0 auto;">茲證明「'+x+'」已按照《屬下團體章則》第31條之規定完成週年登記，有效期至'+diudate+'止。            <br><br>            以下為上述團體在週年登記時提供的幹事資料:        </div>        <br><br><br> <table style="border-collapse: collapse; margin: 0 auto; width: 70%;" id="memberlisttable"><tr style="height: 20px;"><td style="border: 1px solid black;">職位</td><td style="border: 1px solid black;">中文姓名</td><td style="border: 1px solid black; ">英文姓名</td><td style="border: 1px solid black;">學生編號</td></tr></table>          <br><br>  <div style="width: 700px; text-align: left; margin: 0 auto;">如有任何查詢，請以電郵 cuhkrc.acsc@gmail.com 聯絡本委員會。</div><br><br><br><br>  <div style="width: 700px; text-align: right; margin: 0 auto;">香港中文大學學生會代表會<br>屬下團體委員會主席'+letterman+'</div><div style="width: 700px; text-align: left; margin: 0 auto;">'+letterdate+'</div><br><br><br><br></div></div>';
+        //+chinnum[(n+'')[0]]+chinnum[(n+'')[1]]+chinnum[(n+'')[2]]+chinnum[(n+'')[3]]+'年一月三十一日
+        // var mymemberlist = doc.data().memberlist.split('|');
+        var table = document.getElementById("memberlisttable");
+        
+        for (var j=0; j<(mymemberlist.length-1)/5; j++){
+            var row = table.insertRow(table.rows.length);
+            row.style.height = "20px";
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            cell1.innerHTML = mymemberlist[j*5+1];
+            cell2.innerHTML = mymemberlist[j*5+2];
+            cell3.innerHTML = mymemberlist[j*5+3];
+            cell4.innerHTML = mymemberlist[j*5+4];
+            cell1.style.border = '1px solid black';
+            cell2.style.border = '1px solid black';
+            cell3.style.border = '1px solid black';
+            cell4.style.border = '1px solid black';
+            cell1.style.padding = '2px';
+            cell2.style.padding = '2px';
+            cell3.style.padding = '2px';
+            cell4.style.padding = '2px';
+
+        }
+
+        document.getElementById("socshit").onclick = function(){
+            PrintElem(document.getElementById("socshit"));
+        }
+
+        // PrintElem(document.getElementById("socshit"));
+
+
+
+        // var mywindow = window.open("regsocpaper.html", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=1000,left=1000,width=1000,height=1000");
+
+    }
+
+
+    var mywindow;
+    function PrintElem(elem){
+        mywindow = window.open('', 'PRINT', 'height=1600,width=1000');
+
+        mywindow.document.body.innerHTML = "";
+        mywindow.document.write('<html><head><title>' +  '</title>');
+        mywindow.document.write('</head><body>');
+        mywindow.document.write(elem.innerHTML);
+        mywindow.document.write('</body></html>');
+
+        // mywindow.document.close(); // necessary for IE >= 10
+        // mywindow.focus(); // necessary for IE >= 10*/
+
+
+            // mywindow.print();
+        // mywindow.close();
+
+        return true;
+    }
+
+
+    function genpaper(){
+      var tempinput1 = document.getElementById("socpaperinput1").value;
+      var tempinput2 = document.getElementById("socpaperinput2").value;
+      var tempinput3 = document.getElementById("socpaperinput3").value;
+      var tempinput4 = document.getElementById("socpaperinput4").value;
+      var tempinput5 = mydata[tempinput1].step1form1;
+      tempinput5 = tempinput5.substring(tempinput5.indexOf('student1'));
+      tempinput5 = tempinput5.split('|');
+      console.log(tempinput5)
+      var tempoutputtable = '';
+      for (var j=0; j<tempinput5.length; j+=9){
+        if (j!=0&&tempinput5[j]=='student1'||tempinput5[j]=='')
+          break;
+        tempoutputtable+=tempinput5[j]+'|';
+        tempoutputtable+=tempinput5[j+1]+'|';
+        tempoutputtable+=tempinput5[j+2]+'|';
+        tempoutputtable+=tempinput5[j+3]+'|';
+        tempoutputtable+=tempinput5[j+4]+'|';
+      }
+      console.log(tempoutputtable)
+
+      setCookie('letterman',tempinput3,300);
+
+      generateregsocpaper(tempinput1,tempinput2,tempinput3,tempinput4,tempoutputtable);
+      //(x,diudate,letterman,letterdate,mymemberlist)
+    }
+
+
+
     </script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
@@ -820,6 +1009,7 @@
         <a onclick="changepage(this)" href="#file">File</a>
         <a onclick="changepage(this)" href="#raw">Raw Data</a>
         <a onclick="changepage(this)" href="#sudo">Super User</a>
+        <a onclick="changepage(this)" href="#socpaper">Gen Soc Paper</a>
   <!-- <div class="subnav">
     <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
   </div>  -->
@@ -846,8 +1036,19 @@
       <iframe style="width: 100%; height: 100%;" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRkralVI-D4JJGEXhEqy8PgsvHg_pwaFzPohr5bq_MMXlGawI_cXJd9DASmUfJHj9BUsMEmKJIJ51xD/pubhtml?widget=true&amp;headers=false"></iframe>
     </div>
 
-     <div hidden class="mypage" id="superuserpage">
+    <div hidden class="mypage" id="superuserpage">
       
+    </div>
+
+    <div hidden class="mypage" id="socpaperpage">
+      <select class="myinput" id="socpaperinput1" onchange="socpapersocchange()">
+      </select>
+      <input class="myinput" hidden id="socpaperinput2" type="" name="">
+      <input class="myinput" id="socpaperinput3" type="" name="">
+      <input class="myinput"id="socpaperinput4" type="" name="">
+      <button onclick="genpaper()">Generate</button>
+      <hr>
+      <div id="mainframe"></div>
     </div>
 
     <button hidden id="signin-button" onclick="handleSignInClick()">Sign in</button>
