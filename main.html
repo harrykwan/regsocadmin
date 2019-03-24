@@ -2,32 +2,32 @@
 <head>
 </head>
 <body>
-	<script src="https://apis.google.com/js/api.js"></script>
-	<script>
-	function start() {
-	  // 2. Initialize the JavaScript client library.
-	  gapi.client.init({
-	    'apiKey': 'AIzaSyCgqyzrRe2dLa676z725MRVHYhkdQ86A30',
-	    // Your API key will be automatically added to the Discovery Document URLs.
-	    'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
-	    // clientId and scope are optional if auth is not required.
-	    'clientId': '531417626263-6breo4rq95npc1c9t9ip9cjud10oggdp.apps.googleusercontent.com',
-	    'scope': 'https://www.googleapis.com/auth/spreadsheets',
-	  }).then(function() {
-	    // 3. Initialize and make the API request.
-	    return gapi.client.people.people.get({
-	      'resourceName': 'people/me',
-	      'requestMask.includeField': 'person.names'
-	    });
-	  }).then(function(response) {
-	    console.log(response.result);
-	  }, function(reason) {
-	    console.log('Error: ' + reason.result.error.message);
-	  });
-	};
-	// 1. Load the JavaScript client library.
-	gapi.load('client', start);
-	</script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+  function start() {
+    // 2. Initialize the JavaScript client library.
+    gapi.client.init({
+      'apiKey': 'AIzaSyCgqyzrRe2dLa676z725MRVHYhkdQ86A30',
+      // Your API key will be automatically added to the Discovery Document URLs.
+      'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
+      // clientId and scope are optional if auth is not required.
+      'clientId': '531417626263-6breo4rq95npc1c9t9ip9cjud10oggdp.apps.googleusercontent.com',
+      'scope': 'https://www.googleapis.com/auth/spreadsheets',
+    }).then(function() {
+      // 3. Initialize and make the API request.
+      return gapi.client.people.people.get({
+        'resourceName': 'people/me',
+        'requestMask.includeField': 'person.names'
+      });
+    }).then(function(response) {
+      console.log(response.result);
+    }, function(reason) {
+      console.log('Error: ' + reason.result.error.message);
+    });
+  };
+  // 1. Load the JavaScript client library.
+  gapi.load('client', start);
+  </script>
 </body>
 </html> -->
 <html>
@@ -51,6 +51,7 @@
         margin-right: 10px;
         border-radius: 0;
         border: 1px solid black;
+        background: white;
       }
 
       .myinput{
@@ -181,11 +182,13 @@
 
 
 
-  #oldmessage>div{
+  .oldmessage>div{
     margin-left: 20px; 
-    border-left: 2px solid red; 
+    border-left: 2px solid #555555;
+    border-bottom: 2px solid #DDDDDD;
     padding-left: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
   }
 
     </style>
@@ -274,12 +277,14 @@
 
     <div hidden id="approvebox" class="approvebox">
       
-      <div style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">Comments</div>
-      <input placeholder="your name" id='messageheader' style="font-size: 16px; padding: 5px; border: 1px solid black; width: 80%; margin: 20px; margin-bottom: 10px;" type="text" name=""><br>
-      <textarea placeholder="your message" id='messagebody' style="font-size: 16px; padding: 5px; border: 1px solid black; height: 400px; width: 80%; margin: 20px; margin-top: 0px; margin-bottom: 0px;"></textarea><br>
-      <button onclick="addcomment()" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 80%; margin: 20px; margin-top: 10px;">Add</button>
-      <div style="" id="oldmessage"></div>
-      <div onclick="closeapprovebox()" style="position: fixed; color: black; top:6%; right:20%; ">X</div>
+      <div style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">New Comments</div>
+      <input placeholder="your name" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 80%; margin: 20px; margin-bottom: 10px;" type="text" name=""><br>
+      <textarea placeholder="your message"  style="font-size: 16px; padding: 5px; border: 1px solid black; height: 100px; width: 80%; margin: 20px; margin-top: 0px; margin-bottom: 0px;"></textarea><br>
+      <button onclick="addcomment(this,'✓ ')" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 20%; margin: 20px; margin-top: 10px;">Add to approve</button>
+      <button onclick="addcomment(this,'✘ ')" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 20%; margin: 20px; margin-top: 10px;">Add to fail</button>
+      <button onclick="addcomment(this,'')" style="font-size: 16px; padding: 5px; border: 1px solid black; width: 20%; margin: 20px; margin-top: 10px;">Add to notes</button>
+      <div style="" class="oldmessage" id=""></div>
+      <!-- <div onclick="closeapprovebox()" style="position: fixed; color: black; top:6%; right:20%; ">X</div> -->
 
     </div>
     <!--
@@ -311,7 +316,7 @@
                 }
             },200);
             loopcheck2 = setInterval(function(){
-                if (firstin&&senddone){
+                if (firstin&&senddone&&setmessagedone&&changestatusdone){
                     clearInterval(loopcheck);
                     clearInterval(loopcheck2);
                     var tempframe = document.getElementById("i_frame");
@@ -333,6 +338,7 @@
     var myresult;
 
     var mydata={};
+    var passcomment={};
     var adminlist={};
 
     function makeApiCall() {
@@ -361,7 +367,7 @@
         myresult = response.result;
         document.getElementById("myshowsheet").innerHTML = '';
         for (var j=1; j<myresult.values.length; j++){
-        	// document.getElementById("myshowsheet").innerHTML += myresult.values[j]+'<br>';
+          // document.getElementById("myshowsheet").innerHTML += myresult.values[j]+'<br>';
           // console.log(myresult.values[j]);
           if (myresult.values[j]){
             if (myresult.values[j][1]){
@@ -389,6 +395,7 @@
                     mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];         
                 } else if (myresult.values[j][1].split('|').length==1){
                   if (myresult.values[j][2]=='comment'){
+                    // console.log(myresult.values[j][1]+' '+myresult.values[j][3]);
                     mydata[myresult.values[j][1]].comment = myresult.values[j][3];
                     var tempadmin = myresult.values[j][3].split('<div>');
                     tempadmin = tempadmin[tempadmin.length-1];
@@ -405,6 +412,11 @@
                         mydata[myresult.values[j][1]].finish = 1;
                     }
                     clearmydatafile(myresult.values[j][1]);
+                    if (mydata[myresult.values[j][1]].comment){
+                      if (!passcomment[myresult.values[j][1]])
+                        passcomment[myresult.values[j][1]] = [];
+                      passcomment[myresult.values[j][1]].push(mydata[myresult.values[j][1]].comment);
+                    }
                     mydata[myresult.values[j][1]].step = undefined;
                     mydata[myresult.values[j][1]].comment = '';
                   }
@@ -455,8 +467,14 @@
             mystep = '/';
           else{
              mystep = mystep[4];
-            document.getElementById("myshowsheet").innerHTML +=  item + '<table id="'+item+'" style="width: 80%;">'+'<tr><td style="width: 30%;">submit step</td><td>'+ mystep +'</td</tr>'+'<tr><td>last update</td><td>'+mydata[item].updatetime+'</td</tr>'+'</table><br>';
-            document.getElementById("myshowsheet").innerHTML += "<button onclick='myapprove("+'"'+item+'",'+mystep+")'>Approve</button>"+"<button onclick='mydisapprove("+'"'+item+'",'+mystep+")'>Fail</button>"+"<button onclick='mycomment("+'"'+item+'"'+")'>Comment</button>"+'<br><br><hr><br><br>';
+             var mycolor = 'black';
+             if (mystep==1)
+              mycolor = '#DDDD00';
+             else if (mystep==2)
+              mycolor = 'red';
+            document.getElementById("myshowsheet").innerHTML +=  '<span style="border-left: 2px solid '+mycolor+'; padding-left: 10px;">'+item + '</span><a onclick="toggletable(this)" style="margin-left: 20px;">▾</a><div id="'+item+'div" hidden><table id="'+item+'" style="width: 80%;">'+'<tr><td style="width: 30%;">submit step</td><td>'+ mystep +'</td</tr>'+'<tr><td>last update</td><td>'+mydata[item].updatetime+'</td</tr>'+'</table><br>'
+            // document.getElementById("myshowsheet").innerHTML += 
+            +"<button onclick='myapprove("+'"'+item+'",'+mystep+")'>Approve</button>"+"<button onclick='mydisapprove("+'"'+item+'",'+mystep+")'>Fail</button>"+"<button hidden onclick='mycomment("+'"'+item+'"'+")'>Comment</button>"+'<div id="'+item+'comment"></div></div><br><br><hr><br><br>';
 
             var table = document.getElementById(item);
             var myformlist=[];
@@ -548,6 +566,17 @@
       });
     }
 
+
+    function toggletable(x){
+      if (x.nextSibling.hidden==true){
+        x.nextSibling.hidden = false;
+        x.innerHTML = '▴';
+        x.nextSibling.getElementsByTagName('button')[2].click();
+      } else if (x.nextSibling.hidden==false){
+        x.nextSibling.hidden = true;
+        x.innerHTML = '▾';
+      }
+    }
 
     function socpapersocchange(){
       document.getElementById("socpaperinput2").value = mydata[document.getElementById("socpaperinput1").value].step1form1.split('|')[1].split('-')[1];
@@ -677,15 +706,17 @@
             status: y
         })
         .then(function(){
-            
+            changestatusdone = 1;
         })
         .catch(function(error){
             console.log(error);
         });
     }
 
+    var changestatusdone = 0;
     function myapprove(x,y) {
       if (confirm('Approve '+x+'?')){
+        changestatusdone = 0;
         if (y==1){
           changestatus(x,2);
         } else if (y==2){
@@ -703,51 +734,114 @@
 
     var mymessage = '';
     function mydisapprove(x,y) {
-      mymessage = prompt("Disapprove reason:",'');
-      if (confirm('Disapprove '+x+' for '+mymessage+'?')){
-        setusermessage(x,mymessage);
-        if (y==1){
-          changestatus(x,0);
-        } else if (y==2){
-          changestatus(x,2);
-        }
-        document.getElementById("googleforminput2").value = x;
-        document.getElementById("googleforminput3").value = "disapprove";
-        document.getElementById("googleforminput1").value = mymessage;
-        document.getElementById("form").submit();
-        checkdone(1);
+      mymessage = prompt("Disapprove reason:",getnowfailmessage(document.getElementById(x+'div').getElementsByClassName('oldmessage')[0]));
+      if (mymessage){
+        if (confirm('Disapprove '+x+' for '+mymessage+'?')){
+          setmessagedone = 0;
+          if (y==1){
+            changestatus(x,0);
+          } else if (y==2){
+            changestatus(x,2);
+          }
+          setusermessage(x,mymessage);
+          document.getElementById("googleforminput2").value = x;
+          document.getElementById("googleforminput3").value = "disapprove";
+          document.getElementById("googleforminput1").value = mymessage;
+          document.getElementById("form").submit();
+          checkdone(1);
+        } 
       }
+      
       
     }
 
+    var setmessagedone = 0;
     function setusermessage(x,y){
+      console.log(x+' '+y)
       var docRef = db.collection("societystatus").doc(x);
       docRef.set({
         failmessage: y
-      }, {merge: true});
+      }, {merge: true}).then(function(){
+            setmessagedone = 1;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+    }
+
+    function getnowfailmessage(x){
+      var alldisapprovemessage = '';
+      var tempalldiv = x.getElementsByTagName('div');
+      var temppreviousposition = x.innerHTML.indexOf('<h1 style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">Previous Comments</h1>');
+      for (var j=0; j<tempalldiv.length; j++){
+        if(tempalldiv[j].innerHTML.indexOf('✘')!=-1&&(temppreviousposition!=-1&&x.innerHTML.indexOf(tempalldiv[j].innerHTML)<temppreviousposition||temppreviousposition==-1))
+          alldisapprovemessage+='<div>'+tempalldiv[j].innerHTML+'</div>';
+      }
+      return alldisapprovemessage;
+    }
+
+    function setmessagecolor(x){
+      // console.log(x);
+      var alldisapprovemessage = '';
+      var tempalldiv = x.getElementsByTagName('div');
+      for (var j=0; j<tempalldiv.length; j++){
+        if (tempalldiv[j].innerHTML.indexOf('✓')!=-1){
+          // console.log(tempalldiv[j])
+          tempalldiv[j].style.borderColor = "#32CD32";
+          tempalldiv[j].style.borderBottomColor = '#DDDDDD';
+        } else if(tempalldiv[j].innerHTML.indexOf('✘')!=-1){
+          tempalldiv[j].style.borderColor = "red";
+          tempalldiv[j].style.borderBottomColor = '#DDDDDD';
+        }
+      }
     }
 
     function mycomment(x){
-      document.getElementById("googleforminput2").value = x;
+      // document.getElementById("googleforminput2").value = x;
       // document.getElementById("googleforminput3").value = "comment";
       // document.getElementById("googleforminput1").value = mymessage;
-      document.getElementById("approvebox").hidden = false;
-      if (mydata[x].comment)
-        document.getElementById('oldmessage').innerHTML = mydata[x].comment;
-      else
-        document.getElementById('oldmessage').innerHTML = '';
+      // document.getElementById("approvebox").hidden = false;
+      var temppassmessage = '';
+      if (passcomment[x]){
+        temppassmessage = '<h1 style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">Previous Comments</h1>';
+        for (var j=0; j<passcomment[x].length; j++){
+          temppassmessage+=passcomment[x][j];
+        }
+      }
+      // console.log(temppassmessage);
+
+      if (mydata[x].comment){
+        document.getElementById(x+'comment').innerHTML = document.getElementById('approvebox').innerHTML;
+         document.getElementById(x+'div').getElementsByClassName('oldmessage')[0].innerHTML = mydata[x].comment+temppassmessage;
+      } else {
+        document.getElementById(x+'comment').innerHTML = document.getElementById('approvebox').innerHTML;
+        document.getElementById(x+'div').getElementsByClassName('oldmessage')[0].innerHTML = temppassmessage;
+      }
+      setmessagecolor(document.getElementById(x+'div').getElementsByClassName('oldmessage')[0]);
     }
 
-    function addcomment(){
-      if (confirm('Add comment by '+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value)){
+    function addcomment(x,y){
+      var myid = x.parentNode.id.substring(0,x.parentNode.id.indexOf('comment'));
+      document.getElementById("googleforminput2").value = myid;
+      if (confirm('Add comment by '+x.parentNode.getElementsByTagName('input')[0].value+': '+x.parentNode.getElementsByTagName('textarea')[0].value)){
           document.getElementById("googleforminput3").value = "comment";
           if (mydata[document.getElementById("googleforminput2").value].comment)
-            document.getElementById("googleforminput1").value = mydata[document.getElementById("googleforminput2").value].comment+'<div>'+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value+'</div>';
+            document.getElementById("googleforminput1").value = mydata[document.getElementById("googleforminput2").value].comment+'<div>'+x.parentNode.getElementsByTagName('input')[0].value+': '+y+x.parentNode.getElementsByTagName('textarea')[0].value.split('\n').join('<br>')+'</div>';
           else
-            document.getElementById("googleforminput1").value = '<div>'+document.getElementById('messageheader').value+': '+document.getElementById('messagebody').value+'</div>';
-          document.getElementById('oldmessage').innerHTML = document.getElementById("googleforminput1").value;
-          mydata[document.getElementById("googleforminput2").value].comment = document.getElementById('oldmessage').innerHTML;
+            document.getElementById("googleforminput1").value = '<div>'+x.parentNode.getElementsByTagName('input')[0].value+': '+y+x.parentNode.getElementsByTagName('textarea')[0].value.split('\n').join('<br>')+'</div>';
+          document.getElementById(myid+'div').getElementsByClassName('oldmessage')[0].innerHTML = document.getElementById("googleforminput1").value;
+          mydata[document.getElementById("googleforminput2").value].comment = document.getElementById(myid+'div').getElementsByClassName('oldmessage')[0].innerHTML;
           document.getElementById("form").submit();
+          var temppassmessage = '';
+          if (passcomment[myid]){
+            temppassmessage = '<h1 style="margin-left: 20px; font-size: 18px; font-weight: bold; margin-top: 30px;">Previous Comments</h1>';
+            for (var j=0; j<passcomment[myid].length; j++){
+              temppassmessage+=passcomment[myid][j];
+            }
+          }
+          document.getElementById(myid+'div').getElementsByClassName('oldmessage')[0].innerHTML+=temppassmessage;
+          // console.log(document.getElementById(myid+'div').getElementsByClassName('oldmessage')[0])
+          setmessagecolor(document.getElementById(myid+'div').getElementsByClassName('oldmessage')[0]);
       }
       
     }
@@ -896,7 +990,6 @@
     
 
     function generateregsocpaper(x,diudate,letterman,letterdate,mymemberlist) {
-      console.log(mymemberlist)
         document.getElementById("mainframe").innerHTML = '';
         mymemberlist = mymemberlist.split('|');
         var chinnum = ['零','一','二','三','四','五','六','七','八','九','十'];
@@ -977,7 +1070,6 @@
       var tempinput5 = mydata[tempinput1].step1form1;
       tempinput5 = tempinput5.substring(tempinput5.indexOf('student1'));
       tempinput5 = tempinput5.split('|');
-      console.log(tempinput5)
       var tempoutputtable = '';
       for (var j=0; j<tempinput5.length; j+=9){
         if (j!=0&&tempinput5[j]=='student1'||tempinput5[j]=='')
@@ -988,7 +1080,6 @@
         tempoutputtable+=tempinput5[j+3]+'|';
         tempoutputtable+=tempinput5[j+4]+'|';
       }
-      console.log(tempoutputtable)
 
       setCookie('letterman',tempinput3,300);
 
