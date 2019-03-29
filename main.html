@@ -881,8 +881,8 @@
       }
 
       var nowid = -1;
-      for (var j=9; j<formadata.length; j+=9){
-          if (nowid==-1||formadata[nowid][7]<formadata[j][7]){
+      for (var j=9; j<formadata.length-1; j+=9){
+          if ((nowid==-1||formadata[j]!='student1')&&formadata[j]){//parseInt(formadata[nowid][7])<parseInt(formadata[j][7])){
             var row = table.insertRow(table.rows.length);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
@@ -921,7 +921,6 @@
       }
 
       for (var j=nowid+9; j<formadata.length-1; j+=9){
-          
             var row = table.insertRow(table.rows.length);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
