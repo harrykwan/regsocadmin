@@ -401,10 +401,10 @@
                     tempadmin = tempadmin[tempadmin.length-1];
                     tempadmin = tempadmin.substring(0,tempadmin.indexOf(':'));
                     // console.log(tempadmin);
-                    if (tempadmin){
+                    if (!adminlist[tempadmin]){
                       adminlist[tempadmin] = 1;
                     } else {
-                      adminlist[tempadmin]++;
+                      adminlist[tempadmin] = adminlist[tempadmin]+1;
                     }
                   } else {
                     if (myresult.values[j][2]=='approve'){
