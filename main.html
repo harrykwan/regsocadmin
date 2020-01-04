@@ -970,6 +970,7 @@
         document.getElementById("rawdatapage").hidden = false;
       } else if (x.href.split("#")[1]=='sudo'){
         document.getElementById("superuserpage").hidden = false;
+        loadsuperuserdata()
       } else if (x.href.split("#")[1]=='socpaper'){
         document.getElementById("socpaperpage").hidden = false;
       }
@@ -1102,6 +1103,46 @@
       //(x,diudate,letterman,letterdate,mymemberlist)
     }
 
+    var allsocdata = {};
+    var loadedsuperuser = 0;
+
+    function loadsuperuserdata(){
+      if (loadedsuperuser) return
+      loadedsuperuser = 1;
+      db.collection("societystatus").get().then(function(querySnapshot) {
+        document.getElementById("superuserdataarea").innerHTML = ''
+        allsocdata = {}
+          querySnapshot.forEach(function(doc) {
+              // doc.data() is never undefined for query doc snapshots
+              // console.log(doc.id, " => ", doc.data());
+              console.log(doc.data())
+              var tempsocid = doc.id
+              var tempsocdata = doc.data()
+              allsocdata[tempsocid] = tempsocdata;
+              document.getElementById("superuserdataarea").innerHTML += '<span style="border-left: 2px solid black; padding-left:8px;">'+tempsocid+'</span>'+'<div onclick="changefirebase(\''+tempsocid+'\',\'status\')">status: '+tempsocdata.status+'</div>'+'<div onclick="changefirebase(\''+tempsocid+'\',\'filelist\')">file list: '+tempsocdata.filelist+'</div>'+'<div onclick="changefirebase(\''+tempsocid+'\',\'failmessage\')">fail message : '+tempsocdata.failmessage+'</div>'+'<hr>'
+
+          });
+      });
+   
+    }
+
+    function changefirebase(socid,socdata){
+      console.log(socid, socdata)
+      var answer = prompt('change '+socid+' '+socdata+'?',allsocdata[socid][socdata])
+      if (answer){
+        var docRef = db.collection("societystatus").doc(socid);
+        var tempjson = {};
+        tempjson[socdata] = answer;
+        docRef.update(tempjson)
+        .then(function(){
+            changestatusdone = 1;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+      }
+    }
+
 
 
     </script>
@@ -1149,6 +1190,9 @@
     </div>
 
     <div hidden class="mypage" id="superuserpage">
+      <button>Add Society</button> 
+      <button>Clear All</button><br><br>
+      <div id="superuserdataarea"></div>
       
     </div>
 
