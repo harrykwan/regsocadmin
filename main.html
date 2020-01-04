@@ -1041,12 +1041,16 @@
             cell2.style.padding = '2px';
             cell3.style.padding = '2px';
             cell4.style.padding = '2px';
+            cell1.onclick = function(){changesocpaper(this)}
+            cell2.onclick = function(){changesocpaper(this)}
+            cell3.onclick = function(){changesocpaper(this)}
+            cell4.onclick = function(){changesocpaper(this)}
 
         }
 
-        document.getElementById("socshit").onclick = function(){
-            PrintElem(document.getElementById("socshit"));
-        }
+        // document.getElementById("socshit").onclick = function(){
+        //     PrintElem(document.getElementById("socshit"));
+        // }
 
         // PrintElem(document.getElementById("socshit"));
 
@@ -1054,6 +1058,13 @@
 
         // var mywindow = window.open("regsocpaper.html", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=1000,left=1000,width=1000,height=1000");
 
+    }
+
+    function changesocpaper(x){
+      var answer = prompt("change this feild?",x.innerHTML);
+      if (answer){
+        x.innerHTML = answer
+      }
     }
 
 
@@ -1203,6 +1214,7 @@
       <input class="myinput" id="socpaperinput3" type="" name="">
       <input class="myinput"id="socpaperinput4" type="" name="">
       <button onclick="genpaper()">Generate</button>
+      <button onclick="PrintElem(document.getElementById('socshit'))">Print</button>
       <hr>
       <div id="mainframe" style="height:1600px; width:1000px;"></div>
     </div>
