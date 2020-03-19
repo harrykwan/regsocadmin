@@ -394,31 +394,36 @@
                    mydata[myresult.values[j][1].split('|')[0]][myresult.values[j][1].split('|')[1]+myresult.values[j][1].split('|')[2]] = myresult.values[j][2];
                     mydata[myresult.values[j][1].split('|')[0]].updatetime =  myresult.values[j][0];         
                 } else if (myresult.values[j][1].split('|').length==1){
-                  if (myresult.values[j][2]=='comment'){
-                    // console.log(myresult.values[j][1]+' '+myresult.values[j][3]);
-                    mydata[myresult.values[j][1]].comment = myresult.values[j][3];
-                    var tempadmin = myresult.values[j][3].split('<div>');
-                    tempadmin = tempadmin[tempadmin.length-1];
-                    tempadmin = tempadmin.substring(0,tempadmin.indexOf(':'));
-                    // console.log(tempadmin);
-                    if (!adminlist[tempadmin]){
-                      adminlist[tempadmin] = 1;
-                    } else {
-                      adminlist[tempadmin] = adminlist[tempadmin]+1;
+                  if (mydata[myresult.values[j][1]]){
+                    if (myresult.values[j][2]=='comment'){
+                      // console.log(myresult.values[j][1]+' '+myresult.values[j][3]);
+                      mydata[myresult.values[j][1]].comment = myresult.values[j][3];
+                      var tempadmin = myresult.values[j][3].split('<div>');
+                      tempadmin = tempadmin[tempadmin.length-1];
+                      tempadmin = tempadmin.substring(0,tempadmin.indexOf(':'));
+                      // console.log(tempadmin);
+                      if (!adminlist[tempadmin]){
+                        adminlist[tempadmin] = 1;
+                      } else {
+                        adminlist[tempadmin] = adminlist[tempadmin]+1;
+                      }
                     }
                   } else {
-                    if (myresult.values[j][2]=='approve'){
-                      if (mydata[myresult.values[j][1]].step=='step2')
-                        mydata[myresult.values[j][1]].finish = 1;
+                    if (mydata[myresult.values[j][1]]){
+                      if (myresult.values[j][2]=='approve'){
+                        if (mydata[myresult.values[j][1]].step=='step2')
+                          mydata[myresult.values[j][1]].finish = 1;
+                      }
+                      clearmydatafile(myresult.values[j][1]);
+                      if (mydata[myresult.values[j][1]].comment){
+                        if (!passcomment[myresult.values[j][1]])
+                          passcomment[myresult.values[j][1]] = [];
+                        passcomment[myresult.values[j][1]].push(mydata[myresult.values[j][1]].comment);
+                      }
+                      mydata[myresult.values[j][1]].step = undefined;
+                      mydata[myresult.values[j][1]].comment = '';
                     }
-                    clearmydatafile(myresult.values[j][1]);
-                    if (mydata[myresult.values[j][1]].comment){
-                      if (!passcomment[myresult.values[j][1]])
-                        passcomment[myresult.values[j][1]] = [];
-                      passcomment[myresult.values[j][1]].push(mydata[myresult.values[j][1]].comment);
-                    }
-                    mydata[myresult.values[j][1]].step = undefined;
-                    mydata[myresult.values[j][1]].comment = '';
+                   
                   }
                 }
                 // console.log(mydata);
@@ -429,6 +434,7 @@
         }
 
         function clearmydatafile(x){
+          if (mydata[x])
           for (var j=1; j<=11; j++){
             if (mydata[x]['step1form'+j]&&j!=1)
               delete mydata[x]['step1form'+j];
